@@ -5,8 +5,14 @@ import "./HourBox.css";
 //functions imports
 import api from "../api/api";
 
-const HourBox = ({ hour, calendarName, businessId, setChanges, full }) => {
-  console.log("FULLL: ", full);
+const HourBox = ({
+  hour,
+  calendarName,
+  businessId,
+  setChanges,
+  setUser,
+  full,
+}) => {
   //functions
   const clickHandler = () => {
     const obj = {
@@ -14,9 +20,6 @@ const HourBox = ({ hour, calendarName, businessId, setChanges, full }) => {
       hour: hour,
       businessId: businessId,
     };
-    console.log("The obj(parsed) is: ", obj);
-    console.log("The obj(stringified) is: ", JSON.stringify(obj));
-
     api("appointment", {
       method: "POST",
       headers: {
@@ -26,11 +29,17 @@ const HourBox = ({ hour, calendarName, businessId, setChanges, full }) => {
       body: JSON.stringify(obj),
     })
       .then((appointments) => {
-        console.log("you appointments are: ", appointments);
         toast.success("The Appointment is Set ", {
           position: toast.POSITION.BOTTOM_CENTER,
         });
         setChanges((prev) => !prev);
+        setUser((prev) => {
+          const newObj = {
+            ...prev,
+            myAppointments: appointments.myappointments,
+          };
+          return newObj;
+        });
       })
       .catch((err) => console.log(err));
   };

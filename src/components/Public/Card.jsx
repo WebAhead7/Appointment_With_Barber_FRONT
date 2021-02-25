@@ -38,7 +38,6 @@ const Card = ({
         }),
       })
         .then((favorites) => {
-          // console.log("PARSED RESPONSEEEE AFTER Add: ", favorites);
           let userObj = JSON.parse(localStorage.getItem("userObj"));
           userObj.myFavorites = favorites.myfavorites;
           localStorage.setItem("userObj", JSON.stringify(userObj));
@@ -59,7 +58,6 @@ const Card = ({
         }),
       })
         .then((favorites) => {
-          // console.log("PARSED RESPONSEEEE AFTER DELETE: ", favorites);
           let userObj = JSON.parse(localStorage.getItem("userObj"));
           userObj.myFavorites = favorites.myfavorites;
           localStorage.setItem("userObj", JSON.stringify(userObj));
@@ -83,13 +81,8 @@ const Card = ({
       }),
     })
       .then((appointments) => {
-        // console.log("PARSED RESPOOOONSE: ", appointments);
         let userObj = JSON.parse(localStorage.getItem("userObj"));
-        // console.log("after extracting from local storage(parsed): ", userObj);
         userObj.myAppointments = appointments.myappointments;
-
-        // console.log("after updating from local storage(parsed): ", userObj);
-        // console.log("stringified: ", JSON.stringify(userObj));
         localStorage.setItem("userObj", JSON.stringify(userObj));
         setUser(userObj);
       })
@@ -113,7 +106,14 @@ const Card = ({
         <img className="location-icon" src="img/location.svg" />
         <h3 className="location">{location}</h3>
         <h3 className="avg">{avg}/5</h3>
-        {user.myFavorites && user.myFavorites.indexOf(String(id)) == -1 ? (
+        {user.myFavorites == null ? (
+          <img
+            className="favorite-icon empty"
+            src="img/emptystar.svg"
+            alt=""
+            onClick={favToggle}
+          />
+        ) : user.myFavorites.indexOf(String(id)) == -1 ? (
           <img
             className="favorite-icon empty"
             src="img/emptystar.svg"
@@ -132,13 +132,6 @@ const Card = ({
         <div className="edge"></div>
       </div>
     ) : bsCard ? (
-      // !user ? (
-      // <img
-      //   src="https://media2.giphy.com/media/1dH0xIDSToAtZYwf8D/giphy.gif"
-      //   className="scissors"
-      // />
-      // ) : (
-      // <h1 className="loading">Loading</h1>
       <div className="bs-card">
         <NavLink exact to={`businesspage/${id}`}>
           {" "}
@@ -162,21 +155,6 @@ const Card = ({
         <img className="location-icon" src="/img/location.svg" />
         <h3 className="phone">{phone}</h3>
         <img className="phone-icon" src="/img/phone-call.svg" />
-        {/* {user.myFavorites.indexOf(String(id)) == -1 ? (
-            <img
-              className="favorite-icon empty"
-              src="img/emptystar.svg"
-              alt=""
-              onClick={favToggle}
-            />
-          ) : (
-            <img
-              className="favorite-icon "
-              src="img/filledstar.svg"
-              alt=""
-              onClick={favToggle}
-            />
-          )} */}
       </div>
     ) : (
       // )
